@@ -1,0 +1,35 @@
+{% extends 'AppBundle::layout.html.twig' %}
+
+{% block menu_calendar %}active{% endblock %}
+
+{% block contents %}
+    <section>
+    	<div class="container">
+    		{% for item in future %}
+	            <div class="col-xs-2">
+	                <img class="pull-left" style="width:80%;margin:15px" src="{{ web_image('uploads/'~item.season.show.image).resize(200, 300).png }}" />
+	            </div>
+	            <div class="col-xs-10">
+		    		<h3>{{ item }}</h3>
+	                {{ item.season.show.synopsis }}
+                    <h4>Saison {{ item.season }}</h4>
+                    {{ item.number }} - {{ item }} - date de diffusion : {{ item.date|date('d/m/Y') }}
+                    {% if app.user %}
+                        <a href="{{ path('admin_delete_episode', {id: item.id}) }}" class="alert-danger">Supprimer</a>
+                    {% endif %}
+                    <br />
+
+                    {% if app.user %}
+                        <a class="alert-success" href="{{ path('admin_add_episode', {id: item.season.id}) }}">Ajouter un épisode</a>
+                        <a class="btn btn-xs btn-danger" href="{{ path('admin_delete_season', {id: item.season.id}) }}">Supprimer la série</a>
+                    {% endif %}
+	                {% if app.user %}
+		                <p>
+		                    <a class="alert-success" href="{{ path('admin_add_season', {id: item.season.show.id}) }}">Ajouter une saison</a>
+		                </p>
+	                {% endif %}
+		        </div>
+    		{% endfor %}
+    	</div>
+    </section>
+{% endblock %}
